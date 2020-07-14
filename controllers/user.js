@@ -1,14 +1,11 @@
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 const User = require('../models/user');
 
 exports.createUser = (req, res, next) => {
-  console.log(req.body);
-
-  // return res.status(200).json({message: 'data coming soon'});
   bcrypt.hash(req.body.password, 10)
     .then(hash => {
-      // console.log(hash);
       const user = new User({
         email: req.body.email,
         username: req.body.username,
@@ -29,6 +26,40 @@ exports.createUser = (req, res, next) => {
 };
 
 exports.loginUser = (req, res, next) => {
-  console.log(req.body);
-  return res.status(200).json({message: 'data coming soon'});
+  let fetchedUser;
+  const errMessage = 'Invalid credentials';
+
+  User.findOne({username: req.body.username})
+    .then(user => {
+      // * if username not found
+      if(!user){
+        return res.status(401).json({message: errMessage});
+      }
+      // * if username found
+      fetchedUser = user;
+      return bcrypt.compare(req.body.password, user.password);
+    })
+    .then(result => {
+      // * if password incorrect
+      if(!result){
+        return res.status(401).json({message: errMessage});
+      }
+      // * if password correct create web token
+      const token = jwt.sign(
+        {username: fetchedUser.username, userId: fetchedUser._id},
+        process.env.JWT,
+        {expiresIn: '1h'}
+      );
+      res.status(200).json({
+        message: 'login success',
+        token: token,
+        expiresIn: 3600,
+        userId: fetchedUser._id
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      return res.status(401).json({message: errMessage});
+    })
+
 };

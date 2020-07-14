@@ -1,0 +1,6 @@
+{
+  "env": {
+    "MONGO_ATLAS_PW": "",
+    "JWT": "8AlTm1J191sz5ps15FR24hlaf6sxqQkQDPzuyS7E10H089HN7I4ou2LLy40RlH34G7XuyWXS86Hp5SUQ1Q5k4j0M8q97befJPQMi"
+  }
+}
