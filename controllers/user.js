@@ -54,11 +54,11 @@ exports.loginUser = (req, res, next) => {
         message: 'login success',
         token: token,
         expiresIn: 3600,
-        userId: fetchedUser._id
+        userId: fetchedUser._id,
+        username: fetchedUser.username
       });
     })
     .catch(err => {
-      console.log(err);
       return res.status(401).json({message: errMessage});
     })
 
