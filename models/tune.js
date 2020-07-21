@@ -25,6 +25,10 @@ const tuneSchema = mongoose.Schema({
     type: String,
     require: true
   },
+  public: {
+    type: Boolean,
+    required: true
+  },
   body: {
     type: String,
     require: true

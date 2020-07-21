@@ -1,6 +1,11 @@
 const Tune = require('../models/tune');
 
 exports.createTune = (req, res, next) => {
+  const alteredTuneBody = req.body
+    .abc
+    .split(String.fromCharCode(10))
+    .join('<new-line>');
+
   const tune = new Tune({
     creator: req.body.creator,
     title: req.body.title,
@@ -8,7 +13,7 @@ exports.createTune = (req, res, next) => {
     origin: req.body.origin,
     meter: req.body.meter,
     type: req.body.type,
-    body: req.body.body
+    body: alteredTuneBody
   })
 
   tune.save().then(result => {
