@@ -25,7 +25,7 @@ const tuneSchema = mongoose.Schema({
     type: String,
     require: true
   },
-  public: {
+  share: {
     type: Boolean,
     required: true
   },

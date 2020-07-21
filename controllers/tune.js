@@ -13,6 +13,7 @@ exports.createTune = (req, res, next) => {
     origin: req.body.origin,
     meter: req.body.meter,
     type: req.body.type,
+    share: req.body.share,
     body: alteredTuneBody
   })
 
