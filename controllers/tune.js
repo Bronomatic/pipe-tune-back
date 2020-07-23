@@ -29,3 +29,20 @@ exports.createTune = (req, res, next) => {
     })
   })
 }
+
+exports.getTuneById = (req, res, next) => {
+  const id = req.query.id;
+  console.log(id);
+
+  Tune.findById(id)
+    .then(result => {
+      const filteredResult = result;
+      const filteredBody = result.body.split('<new-line>').join('\n');
+      filteredResult.body = filteredBody;
+      res.status(200).json({result: filteredResult});
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(404).json({message: 'Not found in database'});
+    });
+};

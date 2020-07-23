@@ -10,7 +10,7 @@ exports.search = (req, res, next) => {
       if(result){
         res.status(200).json({result: result});
       }else{
-        res.status(404).json({message: 'No post found'});
+        res.status(404).json({message: 'No tunes found'});
       }
     })
     .catch(err => {
