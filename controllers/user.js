@@ -55,7 +55,8 @@ exports.loginUser = (req, res, next) => {
         token: token,
         expiresIn: 3600,
         userId: fetchedUser._id,
-        username: fetchedUser.username
+        username: fetchedUser.username,
+        favorites: fetchedUser.favorites
       });
     })
     .catch(err => {
@@ -63,3 +64,31 @@ exports.loginUser = (req, res, next) => {
     })
 
 };
+
+exports.getUserFavorites = (req,res,next) => {
+  const userId = req.query.id;
+  User.findById(userId)
+    .then(result => {
+      return res.status(200).json({
+        message: 'success',
+        favorites: result.favorites
+      })
+    })
+    .catch(err => {
+      return res.status(404).json({message: 'failed'})
+    })
+}
+
+exports.updateFavorites = (req, res, next) => {
+  const userId = req.body.userId;
+  const favorites = req.body.favorites;
+
+  User.findByIdAndUpdate(userId, {favorites: favorites})
+    .then(result => {
+      res.status(201).json({message: "success"});
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(400).json({message: "error"});
+    })
+}

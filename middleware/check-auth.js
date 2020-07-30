@@ -4,7 +4,7 @@ module.exports = (req, res, next) => {
   try {
     // * get web token from header
     const token = req.headers.authorization.split(' ')[1];
-    const decodeToken = jwt.verify(token, process.env.JWT);
+    const decodedToken = jwt.verify(token, process.env.JWT);
     req.userData = {
       username: decodedToken.username,
       userId: decodedToken.userId

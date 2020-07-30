@@ -2,7 +2,7 @@ const Tune = require('../models/tune');
 
 exports.createTune = (req, res, next) => {
   const alteredTuneBody = req.body
-    .abc
+    .body
     .split(String.fromCharCode(10))
     .join('<new-line>');
 
@@ -14,6 +14,7 @@ exports.createTune = (req, res, next) => {
     meter: req.body.meter,
     type: req.body.type,
     share: req.body.share,
+    tempo: req.body.tempo,
     body: alteredTuneBody
   })
 
@@ -24,15 +25,30 @@ exports.createTune = (req, res, next) => {
     })
   })
   .catch(err => {
+    console.log(err);
     res.status(401).json({
       message: 'tune creation failed'
     })
   })
-}
+};
+
+exports.deleteTune = (req, res, next) => {
+  const id = req.params.id;
+  Tune.deleteOne({_id: id})
+    .then(result => {
+      if(result.n > 0){
+        res.status(200).json({message: 'success'});
+      }else{
+        res.status(401).json({message: 'not authorized'});
+      }
+    })
+    .catch(err => {
+      res.status(500).json({message: 'failed'});
+    })
+};
 
 exports.getTuneById = (req, res, next) => {
-  const id = req.query.id;
-  console.log(id);
+  const id = req.params.id;
 
   Tune.findById(id)
     .then(result => {

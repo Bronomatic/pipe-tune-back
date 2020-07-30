@@ -1,9 +1,10 @@
 const router = require('express').Router();
 
+const checkAuth = require('../middleware/check-auth');
 const tuneController = require('../controllers/tune');
 
-router.post('/create', tuneController.createTune);
-
-router.get('/tune', tuneController.getTuneById);
+router.post('/create', checkAuth, tuneController.createTune);
+router.get('/:id', tuneController.getTuneById);
+router.delete('/delete/:id', checkAuth, tuneController.deleteTune);
 
 module.exports = router;

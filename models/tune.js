@@ -29,6 +29,10 @@ const tuneSchema = mongoose.Schema({
     type: Boolean,
     required: true
   },
+  tempo: {
+    type: Number,
+    required: true
+  },
   body: {
     type: String,
     require: true

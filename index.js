@@ -4,7 +4,6 @@ const bodyParser = require('body-parser');
 
 const userRoutes = require('./routes/user');
 const searchRoutes = require('./routes/search');
-// const createRoutes = require('./routes/create');
 const tuneRoutes = require('./routes/tune');
 
 const app = express();
@@ -16,7 +15,8 @@ const mongoUrl = 'mongodb://localhost:27017/pipeDB';
 mongoose.connect(mongoUrl, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  useCreateIndex: true
+  useCreateIndex: true,
+  useFindAndModify: false
 }).then(() => {
   console.log('connect');
 }).catch((err) => {
@@ -43,7 +43,6 @@ app.use((req, res, next) => {
 
 app.use(userRoutes);
 app.use(searchRoutes);
-// app.use(createRoutes);
 app.use(tuneRoutes);
 
 app.listen(8080);
