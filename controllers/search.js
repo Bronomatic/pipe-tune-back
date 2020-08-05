@@ -1,6 +1,7 @@
 const Tune = require('../models/tune');
 
 exports.search = (req, res, next) => {
+  if(req.query.v === 'null' || req.query.v === ''){ return };
   const searchType = Object.keys(req.query)[0];
 
   if(searchType === 'q'){
@@ -13,7 +14,8 @@ exports.search = (req, res, next) => {
     Tune.find(query)
       .then(result => {
         if(result){
-          res.status(200).json({result: result});
+          const data = resultFilter(result);
+          res.status(200).json({result: data});
         }else{
           res.status(404).json({message: 'No tunes found'});
         }
@@ -26,7 +28,8 @@ exports.search = (req, res, next) => {
     const username = req.query.u;
     Tune.find({"creator": username})
       .then(result => {
-        res.status(200).json({result: result});
+        const data = resultFilter(result);
+        res.status(200).json({result: data});
       })
       .catch(err => {
         res.status(404).json({message: 'not found'});
@@ -36,12 +39,19 @@ exports.search = (req, res, next) => {
     const queryArray = query.split('-');
     Tune.find({_id: {$in: queryArray}})
       .then(result => {
-        res.status(200).json({result: result});
+        const data = resultFilter(result);
+        res.status(200).json({result: data});
       })
       .catch(err => {
         res.status(404).json({message: 'not found'});
       })
-
   }
 
+}
+
+const resultFilter = (result) => {
+  const filteredBody = result[0]['body'].split('<new-line>').join('\n');
+  let data = { ...result }
+  data[0].body = filteredBody;
+  return data;
 }

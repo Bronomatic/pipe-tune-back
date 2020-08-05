@@ -12,15 +12,10 @@ exports.createUser = (req, res, next) => {
         password: hash
       })
       user.save().then(result => {
-        res.status(201).json({
-          message: 'User created',
-          result: result
-        })
+        res.status(201).json({message: 'User created'})
       })
       .catch(err => {
-        res.status(500).json({
-          message: 'User creation failed'
-        });
+        res.status(500).json({message: 'User creation failed'});
       })
     })
 };
@@ -85,10 +80,9 @@ exports.updateFavorites = (req, res, next) => {
 
   User.findByIdAndUpdate(userId, {favorites: favorites})
     .then(result => {
-      res.status(201).json({message: "success"});
+      res.status(201).json({message: "update success"});
     })
     .catch(err => {
-      console.log(err);
-      res.status(400).json({message: "error"});
+      res.status(400).json({message: "update failed"});
     })
 }
